@@ -23,10 +23,10 @@ jobs:
           pip install platformio
 
       - name: Build with PlatformIO (ST7789 Environment)
-        # Ustawienie katalogu roboczego bezpośrednio do folderu z platformio.ini
+        # POPRAWNA ŚCIEŻKA DO FOLDERU Z platformio.ini
         working-directory: esp32_marauder
         run: |
-          # Kompilacja środowiska zdefiniowanego w platformio.ini
+          # Kompilacja środowiska dla ST7789
           pio run -e esp32_st7789 
           
       - name: Upload Firmware Artifact
@@ -34,7 +34,7 @@ jobs:
         with:
           name: esp32-marauder-st7789-firmware
           
-          # Ścieżka do artefaktu musi być zgodna z working-directory
+          # Ścieżka do artefaktu
           path: esp32_marauder/.pio/build/esp32_st7789/firmware.bin
           
           retention-days: 7
