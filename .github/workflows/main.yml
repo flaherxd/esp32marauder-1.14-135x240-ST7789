@@ -26,7 +26,7 @@ jobs:
 
       - name: Build with PlatformIO (ST7789 Environment)
         # Kluczowa zmiana: Poprawna ścieżka do folderu z platformio.ini
-        working-directory: ESP32-1732S019/esp32_marauder
+        working-directory: esp32marauder-1.14-135x240-ST7789/ESP32-1732S019/esp32_marauder
         run: |
           # Kompilacja środowiska dla ST7789 (zgodnie z plikiem platformio.ini)
           pio run -e esp32_st7789 
