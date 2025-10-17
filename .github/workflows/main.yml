@@ -1,10 +1,8 @@
 name: Build ESP32 Marauder (ST7789)
 
 on:
-  # Akcja uruchomi się przy każdym pushu na gałąź 'main'
   push:
     branches: [ main ]
-  # Akcja może być uruchomiona ręcznie z poziomu zakładki Actions
   workflow_dispatch:
 
 jobs:
@@ -25,10 +23,10 @@ jobs:
           pip install platformio
 
       - name: Build with PlatformIO (ST7789 Environment)
-        # Kluczowa zmiana: Poprawna ścieżka do folderu z platformio.ini
-        working-directory: esp32marauder-1.14-135x240-ST7789/ESP32-1732S019/esp32_marauder
+        # Ustawienie katalogu roboczego bezpośrednio do folderu z platformio.ini
+        working-directory: esp32_marauder
         run: |
-          # Kompilacja środowiska dla ST7789 (zgodnie z plikiem platformio.ini)
+          # Kompilacja środowiska zdefiniowanego w platformio.ini
           pio run -e esp32_st7789 
           
       - name: Upload Firmware Artifact
@@ -36,9 +34,7 @@ jobs:
         with:
           name: esp32-marauder-st7789-firmware
           
-          # Kluczowa zmiana: Poprawna ścieżka do skompilowanego pliku .bin
-          # Ścieżka: [Folder_Projektu] / .pio/build / [Nazwa_Środowiska] / firmware.bin
-          path: ESP32-1732S019/esp32_marauder/.pio/build/esp32_st7789/firmware.bin
+          # Ścieżka do artefaktu musi być zgodna z working-directory
+          path: esp32_marauder/.pio/build/esp32_st7789/firmware.bin
           
-          # Artefakt będzie dostępny przez 7 dni
           retention-days: 7
