@@ -1,8 +1,10 @@
-name: Build ESP32 Marauder (esp32_marauder)
+name: Build ESP32 Marauder (ST7789)
 
 on:
+  # Akcja uruchomi się przy każdym pushu na gałąź 'main'
   push:
     branches: [ main ]
+  # Akcja może być uruchomiona ręcznie z poziomu zakładki Actions
   workflow_dispatch:
 
 jobs:
@@ -22,24 +24,21 @@ jobs:
           python -m pip install -U pip
           pip install platformio
 
-      - name: Build with PlatformIO (esp32_marauder folder)
-        working-directory: esp32_marauder
+      - name: Build with PlatformIO (ST7789 Environment)
+        # Kluczowa zmiana: Poprawna ścieżka do folderu z platformio.ini
+        working-directory: ESP32-1732S019/esp32_marauder
         run: |
-          # Kompilacja domyślnego środowiska (np. env:esp32)
-          # Pamiętaj: PlatformIO zapisuje pliki .bin w folderze: .pio/build/<nazwa_env>/
-          pio run -e esp32 # Zakładam, że Twoje środowisko to 'esp32' lub podobne. Zmień jeśli jest inne!
-
-      # --- KLUCZOWA ZMIANA: Zapis artefaktu ---
+          # Kompilacja środowiska dla ST7789 (zgodnie z plikiem platformio.ini)
+          pio run -e esp32_st7789 
+          
       - name: Upload Firmware Artifact
         uses: actions/upload-artifact@v4
         with:
-          # Nazwa, pod jaką plik będzie widoczny w zakładce 'Actions'
-          name: esp32-marauder-firmware
+          name: esp32-marauder-st7789-firmware
           
-          # Ścieżka do skompilowanego pliku binarnego
-          # UWAGA: Ta ścieżka ZALEŻY od nazwy Twojego środowiska (env) w pliku platformio.ini!
-          # Zmień 'esp32' na właściwą nazwę środowiska (np. 'lolin_d32_pro', 'ttgo_t_display', itp.)
-          path: esp32_marauder/.pio/build/esp32/firmware.bin
+          # Kluczowa zmiana: Poprawna ścieżka do skompilowanego pliku .bin
+          # Ścieżka: [Folder_Projektu] / .pio/build / [Nazwa_Środowiska] / firmware.bin
+          path: ESP32-1732S019/esp32_marauder/.pio/build/esp32_st7789/firmware.bin
           
-          # Czas, przez jaki artefakt będzie dostępny (w dniach)
+          # Artefakt będzie dostępny przez 7 dni
           retention-days: 7
