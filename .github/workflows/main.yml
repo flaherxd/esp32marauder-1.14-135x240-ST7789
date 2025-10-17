@@ -25,4 +25,21 @@ jobs:
       - name: Build with PlatformIO (esp32_marauder folder)
         working-directory: esp32_marauder
         run: |
-          # Try building default envi
+          # Kompilacja domyślnego środowiska (np. env:esp32)
+          # Pamiętaj: PlatformIO zapisuje pliki .bin w folderze: .pio/build/<nazwa_env>/
+          pio run -e esp32 # Zakładam, że Twoje środowisko to 'esp32' lub podobne. Zmień jeśli jest inne!
+
+      # --- KLUCZOWA ZMIANA: Zapis artefaktu ---
+      - name: Upload Firmware Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          # Nazwa, pod jaką plik będzie widoczny w zakładce 'Actions'
+          name: esp32-marauder-firmware
+          
+          # Ścieżka do skompilowanego pliku binarnego
+          # UWAGA: Ta ścieżka ZALEŻY od nazwy Twojego środowiska (env) w pliku platformio.ini!
+          # Zmień 'esp32' na właściwą nazwę środowiska (np. 'lolin_d32_pro', 'ttgo_t_display', itp.)
+          path: esp32_marauder/.pio/build/esp32/firmware.bin
+          
+          # Czas, przez jaki artefakt będzie dostępny (w dniach)
+          retention-days: 7
